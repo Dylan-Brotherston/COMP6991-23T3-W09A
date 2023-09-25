@@ -140,20 +140,19 @@ fn run_command(cmd: &str)  -> Result<(), Box<dyn Error>> {
 }
 
 use rustyline::error::ReadlineError;
-use rustyline::Editor;
+use rustyline::DefaultEditor;
 
 fn main() -> Result<(), Box<dyn Error>> {
 
     println!("Welcome to BuffeRS. ");
 
-    // `()` can be used when no completer is required
-    let mut rl = Editor::<()>::new()?;
+    let mut rl = DefaultEditor::new()?;
     loop {
         let readline = rl.readline(">> ");
         match readline {
             Ok(line) => {
                 run_command(&line)?;
-                rl.add_history_entry(line.as_str());
+                let _ = rl.add_history_entry(line.as_str());
             },
             Err(ReadlineError::Interrupted) | Err(ReadlineError::Eof) => {
                 break
